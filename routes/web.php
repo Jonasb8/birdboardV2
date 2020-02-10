@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('projects', 'ProjectController')->only('store');
+Route::resource('projects', 'ProjectController');
