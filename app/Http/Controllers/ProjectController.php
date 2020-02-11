@@ -17,6 +17,7 @@ class ProjectController extends Controller
 
     public function store(ProjectRequest $projectRequest)
     {
+        $attributes['owner_id'] = $auth->id;
         $project = Project::create(request()->all());
 
         return back();

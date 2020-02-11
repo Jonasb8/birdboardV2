@@ -8,6 +8,7 @@ use Tests\TestCase;
 use App\Http\Requests\ProjectRequest;
 use Validator;
 use App\Models\Project;
+use App\Models\User;
 
 class ProjectsTest extends TestCase
 {
@@ -28,7 +29,7 @@ class ProjectsTest extends TestCase
 
     public function testAUserCanCreateAProject()
     {
-        $this->withoutExceptionHandling();
+        $this->actingAs(factory(User::class)->create());
         $project = factory(Project::class)->raw();
 
         $this->post('projects', $project);
@@ -60,9 +61,27 @@ class ProjectsTest extends TestCase
         $this->assertEquals('description', $errorKeys[0]);
     }
 
+    public function testAProjectRequiresAnOwner()
+    {
+        $project = factory(Project::class)->raw(['owner_id' => null]);
+
+        $this->post('/projects', $project);
+
+        $validator = Validator::make($project, $this->rules);
+        $errorKeys = $validator->errors()->keys();
+
+        $this->assertEquals('owner_id', $errorKeys[0]);
+    }
+
+    public function testAnUnsignedUserCannotSeeTheProjects()
+    {
+        $project = factory(Project::class)->raw();
+
+        $this->get('/projects')->assertRedirect('/login');
+    }
+
     public function testAUserCanViewAllProjects()
     {
-        $this->withoutExceptionHandling();
         $projects = factory(Project::class, 4)->create();
 
         $this->get('/projects')
