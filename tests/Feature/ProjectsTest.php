@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use App\Http\Requests\ProjectRequest;
 use Validator;
@@ -13,7 +14,6 @@ use App\Models\User;
 class ProjectsTest extends TestCase
 {
     use RefreshDatabase;
-    use WithFaker;
 
     /**
      * A basic feature test example.
@@ -29,7 +29,8 @@ class ProjectsTest extends TestCase
 
     public function testAUserCanCreateAProject()
     {
-        $this->actingAs(factory(User::class)->create());
+        $user = factory(User::class)->create();
+        $this->be($user);
         $project = factory(Project::class)->raw();
 
         $this->post('projects', $project);
@@ -80,22 +81,26 @@ class ProjectsTest extends TestCase
         $this->get('/projects')->assertRedirect('/login');
     }
 
-    public function testAUserCanViewAllProjects()
-    {
-        $projects = factory(Project::class, 4)->create();
-
-        $this->get('/projects')
-            ->assertSee($projects[0]->title)
-            ->assertSee($projects[1]->title)
-            ->assertSee($projects[2]->title)
-            ->assertSee($projects[3]->title);
-    }
 
     public function testAUserCanViewAProject()
     {
+        $user = factory(User::class)->create();
         $project = factory(Project::class)->create();
+        $this->be($user);
 
         $this->get('/projects/'.$project->id)
             ->assertSee($project->title);
+    }
+
+    public function testAUserCanViewHisProjects()
+    {
+        $users = factory(User::class, 2)->create();
+        $project1 = factory(Project::class)->create(['owner_id' => $users[0]->id]);
+        $project2 = factory(Project::class)->create(['owner_id' => $users[1]->id]);
+
+        $this->be($users[0]);
+        $this->get('/projects')
+            ->assertSee($project1->title)
+            ->assertViewMissing($project2->title);
     }
 }

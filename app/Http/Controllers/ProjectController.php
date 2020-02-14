@@ -10,17 +10,16 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::all();
+        $projects = auth()->user()->projects;
 
         return view('projects.index', compact('projects'));
     }
 
     public function store(ProjectRequest $projectRequest)
     {
-        $attributes['owner_id'] = $auth->id;
-        $project = Project::create(request()->all());
+        $project = Project::create($projectRequest->all());
 
-        return back();
+        return redirect('/projects');
     }
 
     public function show(Project $project)
