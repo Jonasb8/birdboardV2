@@ -11,7 +11,7 @@ use Validator;
 use App\Models\Project;
 use App\Models\User;
 
-class ProjectsTest extends TestCase
+class ManageProjectsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -81,6 +81,13 @@ class ProjectsTest extends TestCase
         $this->get('/projects')->assertRedirect('/login');
     }
 
+    public function testAnUnsignedUserCannotSeeProjectsCreateView()
+    {
+        $project = factory(Project::class)->raw();
+
+        $this->get('/projects/create')->assertRedirect('/login');
+    }
+
 
     public function testAUserCanViewAProject()
     {
@@ -102,5 +109,14 @@ class ProjectsTest extends TestCase
         $this->get('/projects')
             ->assertSee($project1->title)
             ->assertViewMissing($project2->title);
+    }
+
+    public function testAnAuthenticatedUserCanSeeTheProjectsView()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+
+        $this->get('/projects/create')
+            ->assertSee('Create a project');
     }
 }
