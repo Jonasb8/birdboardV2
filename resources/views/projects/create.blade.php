@@ -1,18 +1,16 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-        <title></title>
-    </head>
-    <body>
-        <h1>Create a project</h1>
-            <form class="form" action="" method="post">
-                
-                <label class="label"></label>
-                <input class="input" type="text" name="title" value="">
+@extends('layouts.app')
+@section('content')
+    <div class="box">
+        <h1 class="title">Create a project</h1>
+        {!! Form::open(['action' => 'ProjectController@store']) !!}
+            <input type="hidden" name="owner_id" value="{{ $userId }}">
+            <label class="label">Project title</label>
+            <input class="input" type="text" name="title" value="">
 
-                <label class="label"></label>
-                <input class="input" type="text" name="description" value="">
-            </form>
-    </body>
-</html>
+            <label class="label">Project description</label>
+            <input class="input" type="text" name="description" value="">
+
+            <button type="submit" name="button" class="button">Create a project</button>
+        {!! Form::close() !!}
+    </div>
+@endsection

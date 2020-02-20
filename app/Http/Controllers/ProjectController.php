@@ -17,7 +17,9 @@ class ProjectController extends Controller
 
     public function create()
     {
-        return view('projects.create');
+        $userId = auth()->user()->id;
+
+        return view('projects.create', compact('userId'));
     }
 
     public function store(ProjectRequest $projectRequest)
@@ -29,7 +31,7 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
-        $project = Project::findOrFail($project);
+        $project = Project::find($project->id);
 
         return view('projects.show', compact('project'));
     }
