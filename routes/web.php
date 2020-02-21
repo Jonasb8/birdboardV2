@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 
 Route::resource('projects', 'ProjectController')->middleware('auth');
+Route::resource('projects.tasks', 'ProjectTaskController')->middleware('auth');
 
 Auth::routes();
 

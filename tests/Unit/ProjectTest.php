@@ -20,4 +20,14 @@ class ProjectTest extends TestCase
 
         $this->assertEquals('/projects/'.$project->id, $project->path());
     }
+
+    public function testItCanAddATask()
+    {
+        $project = factory(Project::class)->create();
+        $task = ['body' => 'Task body'];
+
+        $project->addTask($task);
+
+        $this->assertDatabaseHas('tasks', $task);
+    }
 }

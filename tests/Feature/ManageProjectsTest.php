@@ -29,8 +29,7 @@ class ManageProjectsTest extends TestCase
 
     public function testAUserCanCreateAProject()
     {
-        $user = factory(User::class)->create();
-        $this->be($user);
+        $this->signIn();
         $project = factory(Project::class)->raw();
 
         $this->post('projects', $project);
@@ -91,9 +90,8 @@ class ManageProjectsTest extends TestCase
 
     public function testAUserCanViewAProject()
     {
-        $user = factory(User::class)->create();
+        $this->signIn();
         $project = factory(Project::class)->create();
-        $this->be($user);
 
         $this->get('/projects/'.$project->id)
             ->assertSee($project->title);
@@ -113,9 +111,8 @@ class ManageProjectsTest extends TestCase
 
     public function testAnAuthenticatedUserCanSeeTheProjectsView()
     {
-        $user = factory(User::class)->create();
-        $this->be($user);
-
+        $this->signIn();
+        
         $this->get('/projects/create')
             ->assertSee('Create a project');
     }
