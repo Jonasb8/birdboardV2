@@ -13,11 +13,19 @@
 
             <h2 class="title">Tasks</h1>
 
-            @foreach ($project->tasks as $task)
+            @forelse ($project->tasks as $task)
+                {!! Form::open(['method' => 'PUT', 'action' => ['ProjectTaskController@update', $project->id, $task->id]]) !!}
+                    <input class="box" name="body" value="{{ $task->body }}">
+                {!! Form::close() !!}
+            @empty
                 <div class="box">
-                    {{ $task->body }}
+                    Begin by adding a task
                 </div>
-            @endforeach
+            @endforelse
+
+            {!! Form::open(['action' => ['ProjectTaskController@store', $project->id]]) !!}
+                <input placeholder="add a new task" name="body" value="">
+            {!! Form::close() !!}
 
             <div class="generalNotes">
                 <h2 class="title">General notes</h1>

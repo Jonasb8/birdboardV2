@@ -18,4 +18,14 @@ class ProjectTaskController extends Controller
             abort(403);
         }
     }
+
+    public function update(Project $project, Task $task)
+    {
+        $task->update([
+            'body' => request('body'),
+            'project_id' => $project->id
+        ]);
+
+        return redirect($project->path());
+    }
 }
