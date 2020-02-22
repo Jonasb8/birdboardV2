@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Task;
+use App\Models\User;
 
 class Project extends Model
 {
@@ -17,6 +18,11 @@ class Project extends Model
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function addTask($body)

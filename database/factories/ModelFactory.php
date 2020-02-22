@@ -4,6 +4,7 @@
 
 use App\Models\User;
 use App\Models\Project;
+use App\Models\Task;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
@@ -35,5 +36,14 @@ $factory->define(Project::class, function (Faker $faker) {
         'owner_id' => function () {
             return factory(User::class)->create()->id;
         }
+    ];
+});
+
+$factory->define(Task::class, function (Faker $faker) {
+    return [
+        'project_id' => function () {
+            return factory(Project::class)->create()->id;
+        },
+        'body' => $faker->sentence,
     ];
 });
