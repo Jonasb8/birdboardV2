@@ -21,11 +21,15 @@ class ProjectTaskController extends Controller
 
     public function update(Project $project, Task $task)
     {
-        $task->update([
-            'body' => request('body'),
-            'project_id' => $project->id
-        ]);
-
-        return redirect($project->path());
+        if ($project->owner_id === auth()->user()->id) {
+            $task->update([
+                'body' => request('body'),
+                'project_id' => $project->id,
+                'completed' => request()->has('completed'),
+            ]);
+            return redirect($project->path());
+        } else {
+            abort(403);
+        }
     }
 }

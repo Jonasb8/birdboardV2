@@ -50,6 +50,11 @@
         .position-ref {
             position: relative;
         }
+
+        .project-update {
+            display: flex;
+            justify-content: space-between;
+        }
     </style>
 </head>
 <body>

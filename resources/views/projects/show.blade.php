@@ -14,9 +14,12 @@
             <h2 class="title">Tasks</h1>
 
             @forelse ($project->tasks as $task)
-                {!! Form::open(['method' => 'PUT', 'action' => ['ProjectTaskController@update', $project->id, $task->id]]) !!}
-                    <input class="box" name="body" value="{{ $task->body }}">
-                {!! Form::close() !!}
+                <div class="box project-update">
+                    {!! Form::open(['method' => 'PUT', 'action' => ['ProjectTaskController@update', $project->id, $task->id]]) !!}
+                        <input name="body" value="{{ $task->body }}">
+                        <input type="checkbox" name="completed" onChange="this.form.submit()" {{ $task->completed ? 'checked' : '' }}>
+                    {!! Form::close() !!}
+                </div>
             @empty
                 <div class="box">
                     Begin by adding a task

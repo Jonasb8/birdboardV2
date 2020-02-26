@@ -7,7 +7,7 @@ use App\Models\Project;
 
 class Task extends Model
 {
-    protected $fillable = ['body', 'project_id'];
+    protected $fillable = ['body', 'project_id', 'completed'];
 
     public function project()
     {
