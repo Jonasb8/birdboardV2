@@ -55,6 +55,10 @@
             display: flex;
             justify-content: space-between;
         }
+
+        .notes {
+            width: 100%;
+        }
     </style>
 </head>
 <body>

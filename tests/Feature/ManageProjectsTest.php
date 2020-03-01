@@ -112,8 +112,43 @@ class ManageProjectsTest extends TestCase
     public function testAnAuthenticatedUserCanSeeTheProjectsView()
     {
         $this->signIn();
-        
+
         $this->get('/projects/create')
             ->assertSee('Create a project');
+    }
+
+    public function testAProjectCanBeUpdated()
+    {
+        $this->signIn();
+
+        $project = factory(Project::class)->create();
+        $projectUpdate = [
+            'title' => 'title update',
+            'description' => 'desc update',
+            'notes' => 'new notes',
+            'owner_id' => auth()->user()->id,
+        ];
+
+        $this->put($project->path(), $projectUpdate);
+
+        $this->assertDatabaseHas('projects', $projectUpdate);
+    }
+
+    public function testAnUnsignedUserCannotUpdateProjectsOfOthers()
+    {
+        $this->signIn();
+        $user = factory(User::class)->create();
+        $project = factory(Project::class)->create();
+        $projectUpdate = [
+            'title' => 'title update',
+            'description' => 'desc update',
+            'notes' => 'new notes',
+            'owner_id' => $user->id,
+        ];
+        
+        $this->put($project->path(), $projectUpdate)
+            ->assertStatus(403);
+
+        $this->assertDatabaseMissing('projects', $projectUpdate);
     }
 }

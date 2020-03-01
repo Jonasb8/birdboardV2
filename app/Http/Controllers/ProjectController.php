@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Http\Requests\ProjectRequest;
+use App\Http\Requests\ProjectUpdateRequest;
 
 class ProjectController extends Controller
 {
@@ -34,5 +35,15 @@ class ProjectController extends Controller
         $project = Project::find($project->id);
 
         return view('projects.show', compact('project'));
+    }
+
+    public function update(Project $project, ProjectUpdateRequest $projectUpdateRequest)
+    {
+        if (auth()->user()->isNot($project->owner)) {
+            abort(403);
+        }
+
+        $project->update($projectUpdateRequest->all());
+        return redirect($project->path());
     }
 }

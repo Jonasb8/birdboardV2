@@ -8,7 +8,7 @@ use App\Models\User;
 
 class Project extends Model
 {
-    protected $fillable = ['title', 'description', 'owner_id'];
+    protected $fillable = ['title', 'description', 'notes', 'owner_id'];
 
     public function path()
     {

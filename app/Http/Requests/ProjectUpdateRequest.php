@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProjectRequest extends FormRequest
+class ProjectUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,18 +21,13 @@ class ProjectRequest extends FormRequest
      *
      * @return array
      */
-    public function getRules()
-    {
-        return [
-            'title' => 'required',
-            'description' => 'required',
-            'notes' => 'sometimes',
-            'owner_id' => 'required',
-        ];
-    }
-
     public function rules()
     {
-        return self::getRules();
+        return [
+            'title' => 'sometimes',
+            'description' => 'sometimes',
+            'notes' => 'sometimes',
+            'owner_id' => 'sometimes',
+        ];
     }
 }
