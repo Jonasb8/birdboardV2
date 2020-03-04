@@ -21,7 +21,7 @@ class ProjectTaskController extends Controller
 
     public function update(Project $project, Task $task)
     {
-        $this->authorize('update', $project);
+        $project->owner->can('update', $task);
         $task->update([
             'body' => request('body'),
             'project_id' => $project->id,

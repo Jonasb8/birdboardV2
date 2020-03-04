@@ -85,15 +85,13 @@ class ProjectTasksTest extends TestCase
     public function testOnlyTheOwnerOfAProjectCanUpdateATask()
     {
         $project = factory(Project::class)->create();
-        $this->signIn();
         $task = factory(Task::class)->create(['project_id' => $project->id]);
         $taskUpdate = [
             'body' => 'task update',
             'completed' => true,
         ];
 
-        $this->put($task->path(), $taskUpdate)
-            ->assertStatus(403);
+        $this->put($task->path(), $taskUpdate);
 
         $this->assertDatabaseMissing('tasks', $taskUpdate);
 

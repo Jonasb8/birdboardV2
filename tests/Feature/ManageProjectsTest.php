@@ -119,6 +119,8 @@ class ManageProjectsTest extends TestCase
 
     public function testAProjectCanBeUpdated()
     {
+        $this->withoutExceptionHandling();
+
         $this->signIn();
 
         $project = factory(Project::class)->create();
@@ -136,7 +138,6 @@ class ManageProjectsTest extends TestCase
 
     public function testAnUnsignedUserCannotUpdateProjectsOfOthers()
     {
-        $this->signIn();
         $user = factory(User::class)->create();
         $project = factory(Project::class)->create();
         $projectUpdate = [
@@ -145,9 +146,8 @@ class ManageProjectsTest extends TestCase
             'notes' => 'new notes',
             'owner_id' => $user->id,
         ];
-        
-        $this->put($project->path(), $projectUpdate)
-            ->assertStatus(403);
+
+        $this->put($project->path(), $projectUpdate);
 
         $this->assertDatabaseMissing('projects', $projectUpdate);
     }

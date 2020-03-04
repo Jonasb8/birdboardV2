@@ -39,7 +39,7 @@ class ProjectController extends Controller
 
     public function update(Project $project, ProjectUpdateRequest $projectUpdateRequest)
     {
-        $this->authorize('update', $project);
+        $project->owner->can('update', $project);
 
         $project->update($projectUpdateRequest->all());
         return redirect($project->path());
