@@ -39,9 +39,7 @@ class ProjectController extends Controller
 
     public function update(Project $project, ProjectUpdateRequest $projectUpdateRequest)
     {
-        if (auth()->user()->isNot($project->owner)) {
-            abort(403);
-        }
+        $this->authorize('update', $project);
 
         $project->update($projectUpdateRequest->all());
         return redirect($project->path());

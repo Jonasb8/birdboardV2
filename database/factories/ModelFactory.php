@@ -32,8 +32,8 @@ $factory->define(User::class, function (Faker $faker) {
 $factory->define(Project::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence,
-        'description' => $faker->paragraph,
-        'notes' => $faker->paragraph,
+        'description' => $faker->sentence,
+        'notes' => $faker->sentence,
         'owner_id' => function () {
             return factory(User::class)->create()->id;
         }
